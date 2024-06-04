@@ -148,11 +148,22 @@ export class Product extends PosModel {
         const attributes = this.attribute_line_ids
             .map((id) => this.pos.attributes_by_ptal_id[id])
             .filter((attr) => attr !== undefined);
-        return await this.env.services.popup.add(ProductConfiguratorPopup, {
-            product: this,
-            attributes: attributes,
-            quantity: initQuantity,
-        });
+        if (attributes.some((attribute) => attribute.values.length > 1 || attribute.values[0].is_custom)) {
+            return await this.env.services.popup.add(ProductConfiguratorPopup, {
+                product: this,
+                attributes: attributes,
+                quantity: initQuantity,
+            });
+        }
+        return {
+            confirmed: true,
+            payload: {
+                attribute_value_ids: attributes.map((attr) => attr.values[0].id),
+                attribute_custom_values: [],
+                price_extra: attributes.reduce((acc, attr) => acc + attr.values[0].price_extra, 0),
+                quantity: 1,
+            }
+        };
     }
 
     isConfigurable() {
@@ -595,26 +606,30 @@ export class Orderline extends PosModel {
             const toRefundDetail = this.pos.toRefundLines[this.refunded_orderline_id];
             const maxQtyToRefund =
                 toRefundDetail.orderline.qty - toRefundDetail.orderline.refundedQty;
-            if (quant > 0) {
-                this.env.services.popup.add(ErrorPopup, {
-                    title: _t("Positive quantity not allowed"),
-                    body: _t(
-                        "Only a negative quantity is allowed for this refund line. Click on +/- to modify the quantity to be refunded."
-                    ),
-                });
+            if (quant > 0 ) {
+                if (!this.comboParent) {
+                    this.env.services.popup.add(ErrorPopup, {
+                        title: _t("Positive quantity not allowed"),
+                        body: _t(
+                            "Only a negative quantity is allowed for this refund line. Click on +/- to modify the quantity to be refunded."
+                        ),
+                    });
+                }
                 return false;
             } else if (quant == 0) {
                 toRefundDetail.qty = 0;
             } else if (-quant <= maxQtyToRefund) {
                 toRefundDetail.qty = -quant;
             } else {
-                this.env.services.popup.add(ErrorPopup, {
-                    title: _t("Greater than allowed"),
-                    body: _t(
-                        "The requested quantity to be refunded is higher than the refundable quantity of %s.",
-                        this.env.utils.formatProductQty(maxQtyToRefund)
-                    ),
-                });
+                if(!this.comboParent){
+                    this.env.services.popup.add(ErrorPopup, {
+                        title: _t("Greater than allowed"),
+                        body: _t(
+                            "The requested quantity to be refunded is higher than the refundable quantity of %s.",
+                            this.env.utils.formatProductQty(maxQtyToRefund)
+                        ),
+                    });
+                }
                 return false;
             }
         }
@@ -2142,6 +2157,12 @@ export class Order extends PosModel {
             // Make sure the combo parent is selected.
             this.select_orderline(line);
         }
+        this.hasJustAddedProduct = true;
+        clearTimeout(this.productReminderTimeout);
+        this.productReminderTimeout = setTimeout(() => {
+            this.hasJustAddedProduct = false;
+        }, 3000);
+        return line;
     }
 
     compute_child_lines(comboParentProduct, comboLines, pricelist) {
