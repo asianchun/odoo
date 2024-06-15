@@ -142,9 +142,8 @@ class StockMoveLine(models.Model):
         for record in self:
             if not record.quant_id or record.quantity:
                 continue
-            origin_move = record.move_id._origin
-            if float_compare(record.move_id.product_qty, origin_move.quantity, precision_rounding=record.move_id.product_uom.rounding) > 0:
-                record.quantity = max(0, min(record.quant_id.available_quantity, record.move_id.product_qty - origin_move.quantity))
+            if float_compare(record.move_id.product_qty, record.quantity, precision_rounding=record.move_id.product_uom.rounding) > 0:
+                record.quantity = max(0, min(record.quant_id.available_quantity, record.move_id.product_qty - record.move_id.quantity))
             else:
                 record.quantity = max(0, record.quant_id.available_quantity)
 
@@ -616,7 +615,7 @@ class StockMoveLine(models.Model):
             return 0, False
         if action == "available":
             available_qty, in_date = self.env['stock.quant']._update_available_quantity(self.product_id, location, quantity, lot_id=lot, package_id=package, owner_id=owner, in_date=in_date)
-        elif action == "reserved" and not self.move_id._should_bypass_reservation():
+        elif action == "reserved" and not self.move_id._should_bypass_reservation(location):
             self.env['stock.quant']._update_reserved_quantity(self.product_id, location, quantity, lot_id=lot, package_id=package, owner_id=owner)
         if available_qty < 0 and lot:
             # see if we can compensate the negative quants with some untracked quants
