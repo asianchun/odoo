@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 17.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-01-29 10:45+0000\n"
+"POT-Creation-Date: 2024-08-13 10:27+0000\n"
 "PO-Revision-Date: 2023-10-26 23:09+0000\n"
 "Last-Translator: Larisa_nexterp, 2024\n"
 "Language-Team: Romanian (https://app.transifex.com/odoo/teams/41243/ro/)\n"
@@ -77,15 +77,8 @@ msgid ""
 "A participant with these details has already been registered on the network."
 " If you have previously registered to an alternative Peppol service, please "
 "deregister from that service, or request a migration key before trying "
-"again."
+"again. "
 msgstr ""
-"Un participant cu aceste detalii a fost deja înregistrat în rețea. Dacă "
-"v-ați înregistrat anterior la un serviciu alternativ Peppol, vă rugăm să "
-"anulați înregistrarea din acel serviciu sau să solicitați o cheie de migrare"
-" înainte de a încerca din nou.Un participant cu aceste detalii a fost deja "
-"înregistrat în rețea. Dacă v-ați înregistrat anterior la un serviciu "
-"alternativ Peppol, vă rugăm să anulați înregistrarea din acel serviciu sau "
-"să solicitați o cheie de migrare înainte de a încerca din nou."
 
 #. module: account_peppol
 #. odoo-python
@@ -267,8 +260,8 @@ msgstr "Datele de contact au fost actualizate."
 #. odoo-python
 #: code:addons/account_peppol/models/res_config_settings.py:0
 #, python-format
-msgid "Contact email and phone number are required."
-msgstr "E-mailul de contact și numărul de telefon sunt necesare."
+msgid "Contact email and mobile number are required."
+msgstr ""
 
 #. module: account_peppol
 #. odoo-python
@@ -336,6 +329,12 @@ msgid "Incoming Invoices Journal"
 msgstr "Jurnalul facturilor primite"
 
 #. module: account_peppol
+#: model:ir.model.fields,field_description:account_peppol.field_res_partner__is_peppol_edi_format
+#: model:ir.model.fields,field_description:account_peppol.field_res_users__is_peppol_edi_format
+msgid "Is Peppol Edi Format"
+msgstr ""
+
+#. module: account_peppol
 #: model:ir.model,name:account_peppol.model_account_journal
 msgid "Journal"
 msgstr "Jurnal"
@@ -374,6 +373,17 @@ msgstr "Cheie de Migrare"
 #: model_terms:ir.ui.view,arch_db:account_peppol.res_config_settings_view_form
 msgid "Migration key"
 msgstr "Cheie de migrare"
+
+#. module: account_peppol
+#: model_terms:ir.ui.view,arch_db:account_peppol.res_config_settings_view_form
+msgid "Mobile Number"
+msgstr "Număr de telefon mobil"
+
+#. module: account_peppol
+#: model:ir.model.fields,field_description:account_peppol.field_res_company__account_peppol_phone_number
+#: model:ir.model.fields,field_description:account_peppol.field_res_config_settings__account_peppol_phone_number
+msgid "Mobile number (for validation)"
+msgstr ""
 
 #. module: account_peppol
 #: model:ir.model.fields.selection,name:account_peppol.selection__res_company__account_peppol_proxy_state__not_registered
@@ -552,17 +562,6 @@ msgstr "Actualizare de stare Peppol: %s"
 
 #. module: account_peppol
 #: model_terms:ir.ui.view,arch_db:account_peppol.res_config_settings_view_form
-msgid "Phone Number"
-msgstr "Număr telefon"
-
-#. module: account_peppol
-#: model:ir.model.fields,field_description:account_peppol.field_res_company__account_peppol_phone_number
-#: model:ir.model.fields,field_description:account_peppol.field_res_config_settings__account_peppol_phone_number
-msgid "Phone number (for validation)"
-msgstr "Număr de telefon (pentru validare)"
-
-#. module: account_peppol
-#: model_terms:ir.ui.view,arch_db:account_peppol.res_config_settings_view_form
 msgid ""
 "Please do not hesitate to contact our support if you need further "
 "assistance."
@@ -574,9 +573,8 @@ msgstr ""
 #. odoo-python
 #: code:addons/account_peppol/models/res_config_settings.py:0
 #, python-format
-msgid "Please enter a phone number to verify your application."
+msgid "Please enter a mobile number to verify your application."
 msgstr ""
-"Vă rugăm să introduceți un număr de telefon pentru a vă verifica aplicația."
 
 #. module: account_peppol
 #. odoo-python
@@ -592,13 +590,10 @@ msgstr ""
 #: code:addons/account_peppol/models/res_company.py:0
 #, python-format
 msgid ""
-"Please enter the phone number in the correct international format.\n"
+"Please enter the mobile number in the correct international format.\n"
 "For example: +32123456789, where +32 is the country code.\n"
 "Currently, only European countries are supported."
 msgstr ""
-"Vă rugăm să introduceți numărul de telefon în formatul internațional corect.\n"
-"De exemplu: +32123456789, unde +32 este codul țării.\n"
-"În prezent, sunt acceptate doar țările europene."
 
 #. module: account_peppol
 #. odoo-python
@@ -841,15 +836,6 @@ msgstr ""
 "partener."
 
 #. module: account_peppol
-#: model_terms:ir.ui.view,arch_db:account_peppol.res_partner_form_account_peppol
-msgid ""
-"To generate electronic invoices, also set a country and a bank account for "
-"this partner."
-msgstr ""
-"Pentru a genera facturi electronice, setați, de asemenea, o țară și un cont "
-"bancar pentru acest partener."
-
-#. module: account_peppol
 #. odoo-python
 #: code:addons/account_peppol/models/res_config_settings.py:0
 #, python-format
@@ -932,16 +918,16 @@ msgid "Verify Peppol"
 msgstr "Verificați Peppol"
 
 #. module: account_peppol
-#: model_terms:ir.ui.view,arch_db:account_peppol.res_partner_form_account_peppol
-msgid "Verify partner's PEPPOL endpoint"
-msgstr "Verificați punctul final PEPPOL al partenerului"
-
-#. module: account_peppol
 #. odoo-javascript
 #: code:addons/account_peppol/static/src/components/res_config_settings_buttons/res_config_settings_buttons.xml:0
 #, python-format
-msgid "Verify phone number"
-msgstr "Verificați numărul de telefon"
+msgid "Verify mobile number"
+msgstr ""
+
+#. module: account_peppol
+#: model_terms:ir.ui.view,arch_db:account_peppol.res_partner_form_account_peppol
+msgid "Verify partner's PEPPOL endpoint"
+msgstr "Verificați punctul final PEPPOL al partenerului"
 
 #. module: account_peppol
 #: model:ir.model.fields,field_description:account_peppol.field_account_move_send__peppol_warning
@@ -968,8 +954,8 @@ msgstr ""
 #. module: account_peppol
 #: model:ir.model.fields,help:account_peppol.field_res_company__account_peppol_phone_number
 #: model:ir.model.fields,help:account_peppol.field_res_config_settings__account_peppol_phone_number
-msgid "You will receive a verification code to this phone number"
-msgstr "Veți primi un cod de verificare la acest număr de telefon"
+msgid "You will receive a verification code to this mobile number"
+msgstr ""
 
 #. module: account_peppol
 #: model_terms:ir.ui.view,arch_db:account_peppol.res_config_settings_view_form
